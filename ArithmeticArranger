@@ -1,0 +1,35 @@
+def arithmetic_arranger(problems, show_results=False):
+    if len(problems) > 5:
+        return "Error: Too many problems."
+    
+    lines = {"operand1": [], "operator": [], "operand2": [], "result": []}
+    
+    for problem in problems:
+        operand1, operator, operand2 = problem.split()
+        
+        if operator not in ('+', '-'):
+            return "Error: Operator must be '+' or '-'."
+        
+        if not (operand1.isdigit() and operand2.isdigit()):
+            return "Error: Numbers must only contain digits."
+        
+        if len(operand1) > 4 or len(operand2) > 4:
+            return "Error: Numbers cannot be more than four digits."
+        
+        max_length = max(len(operand1), len(operand2)) + 2
+        
+        lines["operand1"].append(operand1.rjust(max_length))
+        lines["operator"].append(operator + operand2.rjust(max_length - 1))
+        lines["operand2"].append('-' * max_length)
+        
+        if show_results:
+            if operator == '+':
+                result = str(int(operand1) + int(operand2))
+            else:
+                result = str(int(operand1) - int(operand2))
+            lines["result"].append(result.rjust(max_length))
+
+    arranged_problems_str = "\n".join(["    ".join(line).rstrip() for line in lines.values()])
+    return arranged_problems_str
+problems = (["32 + 8", "1 - 3801", "9999 + 9999", "523 - 49"])
+print(arithmetic_arranger(problems, True))
